@@ -259,6 +259,64 @@ function App() {
           )}
         </main>
       </div>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer-content">
+          <div className="footer-section">
+            <div className="footer-logo">
+              <span className="footer-icon">💬</span>
+              <span className="footer-text">Contact Center</span>
+            </div>
+            <p className="footer-description">
+              Professional customer support platform built with modern technologies
+            </p>
+          </div>
+          
+          <div className="footer-section">
+            <h4 className="footer-title">Quick Links</h4>
+            <ul className="footer-links">
+              <li><a href="#" className="footer-link">Dashboard</a></li>
+              <li><a href="#" className="footer-link">Analytics</a></li>
+              <li><a href="#" className="footer-link">Settings</a></li>
+              <li><a href="#" className="footer-link">Help</a></li>
+            </ul>
+          </div>
+          
+          <div className="footer-section">
+            <h4 className="footer-title">Support</h4>
+            <ul className="footer-links">
+              <li><a href="#" className="footer-link">Documentation</a></li>
+              <li><a href="#" className="footer-link">API Reference</a></li>
+              <li><a href="#" className="footer-link">Contact Us</a></li>
+              <li><a href="#" className="footer-link">Status</a></li>
+            </ul>
+          </div>
+          
+          <div className="footer-section">
+            <h4 className="footer-title">Connect</h4>
+            <div className="social-links">
+              <a href="#" className="social-link" title="GitHub">📱</a>
+              <a href="#" className="social-link" title="LinkedIn">💼</a>
+              <a href="#" className="social-link" title="Twitter">🐦</a>
+              <a href="#" className="social-link" title="Email">📧</a>
+            </div>
+          </div>
+        </div>
+        
+        <div className="footer-bottom">
+          <div className="footer-bottom-content">
+            <p className="copyright">
+              © 2025 <span className="author-name">Matt Christiansen</span>. All rights reserved.
+            </p>
+            <div className="footer-bottom-links">
+              <a href="#" className="footer-bottom-link">Privacy Policy</a>
+              <a href="#" className="footer-bottom-link">Terms of Service</a>
+              <a href="#" className="footer-bottom-link">Cookie Policy</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

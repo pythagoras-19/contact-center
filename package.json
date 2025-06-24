@@ -1,5 +1,6 @@
 {
-  "name": "contact-center-client",
+  "name": "connectly",
+  "description": "Connectly: Modern, beautiful, and secure customer chat/support platform.",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -121,8 +121,8 @@ function App() {
       <header className="header">
         <div className="header-content">
           <div className="logo">
-            <span className="logo-icon">💬✨</span>
-            <h1>Contact Center</h1>
+            <span className="logo-icon">💬🔗</span>
+            <h1>Connectly</h1>
             <span className="sparkle">✨</span>
           </div>
           <div className="header-stats">
@@ -260,7 +260,7 @@ function App() {
             <div className="welcome-screen">
               <div className="welcome-content">
                 <div className="welcome-icon">🎉</div>
-                <h2>Welcome to Contact Center! ✨</h2>
+                <h2>Welcome to Connectly! ✨</h2>
                 <p>Select a chat from the sidebar to start helping customers</p>
                 <div className="welcome-stats">
                   <div className="welcome-stat">
@@ -293,8 +293,8 @@ function App() {
         <div className="footer-content">
           <div className="footer-section">
             <div className="footer-logo">
-              <span className="footer-icon">💬</span>
-              <span className="footer-text">Contact Center</span>
+              <span className="footer-icon">💬🔗</span>
+              <span className="footer-text">Connectly</span>
             </div>
             <p className="footer-description">
               Professional customer support platform built with modern technologies

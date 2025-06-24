@@ -1,6 +1,31 @@
-# 💬✨ Contact Center Client
+# Connectly
 
-A beautiful, modern React TypeScript application for contact center agents to receive and manage customer chats with a delightful user interface.
+Connectly is a modern, beautiful, and secure customer chat/support platform built with React and TypeScript. It features a professional UI, real-time chat, XSS protection, and a delightful user experience.
+
+## Features
+- Responsive, modern UI
+- Secure chat with robust XSS protection
+- Quick replies, typing indicators, and emoji support
+- Professional branding and easy customization
+
+## Getting Started
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/pythagoras-19/contact-center.git
+   cd contact-center
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the app:
+   ```bash
+   npm start
+   ```
+
+## License
+MIT
 
 ## 🌟 Features
 

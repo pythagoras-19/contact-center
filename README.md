@@ -24,7 +24,7 @@ A beautiful, modern React TypeScript application for contact center agents to re
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/pythagoras-19/contact-center.git
 cd contact-center
 ```
 

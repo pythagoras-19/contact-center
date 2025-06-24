@@ -148,6 +148,29 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Inspired by modern contact center interfaces
 - Designed for optimal user experience
 
+## 📝 TODO
+
+1. **User Authentication**  
+   Add secure login/logout for agents and customers.
+2. **Start New Chat**  
+   Allow agents to initiate new chat threads with customers.
+3. **Edit & Delete Messages**  
+   Enable editing and deleting of messages for agents.
+4. **Real-Time Updates**  
+   Implement WebSocket or polling for instant message delivery.
+5. **Message Status Indicators**  
+   Show when messages are delivered, read, or failed.
+6. **Search & Filter Chats**  
+   Add search and filter functionality for chat history.
+7. **Agent Assignment & Transfer**  
+   Allow chats to be assigned or transferred between agents.
+8. **Customer Profile View**  
+   Display customer info and chat history in the sidebar or chat area.
+9. **Analytics Dashboard**  
+   Show chat volume, response times, and agent performance metrics.
+10. **Production Deployment**  
+    Set up CI/CD and deploy the app securely to a cloud provider.
+
 ---
 
 **Made with ✨ and lots of 💜** 

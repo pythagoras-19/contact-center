@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import AWS from 'aws-sdk';
@@ -28,43 +28,77 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'connectly-backend' });
 });
 
-// GET /messages - List all messages
-app.get('/messages', async (_req, res) => {
+// GET /chats - List all chats (unique chatIds, with latest message)
+app.get('/chats', async (_req: Request, res: Response) => {
   const params = {
     TableName: 'Messages',
+    ProjectionExpression: 'chatId, customerName, message, timestamp',
   };
   try {
     const data = await dynamoDb.scan(params).promise();
-    res.json(data.Items || []);
+    // Group by chatId and get the latest message for each chat
+    const chatsMap: Record<string, any> = {};
+    (data.Items || []).forEach((item: any) => {
+      if (!chatsMap[item.chatId] || item.timestamp > chatsMap[item.chatId].timestamp) {
+        chatsMap[item.chatId] = item;
+      }
+    });
+    const chats = Object.values(chatsMap);
+    res.json(chats);
   } catch (error) {
-    console.error('Error fetching messages:', error);
-    res.status(500).json({ error: 'Failed to fetch messages' });
+    console.error('Error fetching chats:', error);
+    res.status(500).json({ error: 'Failed to fetch chats' });
   }
 });
 
-// POST /messages - Create a new message
-app.post('/messages', async (req, res) => {
-  const { customerName, message } = req.body;
-  if (!customerName || !message) {
-    return res.status(400).json({ error: 'customerName and message are required' });
-  }
-  const newMessage = {
-    id: uuidv4(),
-    customerName,
-    message,
-    timestamp: new Date().toISOString(),
-  };
+// GET /chats/:chatId/messages - List all messages for a chat (scan + filter)
+app.get('/chats/:chatId/messages', async (req: Request, res: Response) => {
+  const { chatId } = req.params;
   const params = {
     TableName: 'Messages',
-    Item: newMessage,
+    FilterExpression: 'chatId = :chatId',
+    ExpressionAttributeValues: {
+      ':chatId': chatId,
+    },
   };
   try {
-    await dynamoDb.put(params).promise();
-    res.status(201).json(newMessage);
+    const data = await dynamoDb.scan(params).promise();
+    // Sort by timestamp ascending
+    const items = (data.Items || []).sort((a: any, b: any) => a.timestamp.localeCompare(b.timestamp));
+    res.json(items);
   } catch (error) {
-    console.error('Error saving message:', error);
-    res.status(500).json({ error: 'Failed to save message' });
+    console.error('Error fetching messages for chat:', error);
+    res.status(500).json({ error: 'Failed to fetch messages for chat' });
   }
+});
+
+// POST /chats/:chatId/messages - Add a message to a chat
+app.post('/chats/:chatId/messages', (req: Request, res: Response) => {
+  (async () => {
+    const { chatId } = req.params;
+    const { customerName, message } = req.body;
+    if (!customerName || !message) {
+      return res.status(400).json({ error: 'customerName and message are required' });
+    }
+    const newMessage = {
+      id: uuidv4(),
+      chatId,
+      customerName,
+      message,
+      timestamp: new Date().toISOString(),
+    };
+    const params = {
+      TableName: 'Messages',
+      Item: newMessage,
+    };
+    try {
+      await dynamoDb.put(params).promise();
+      res.status(201).json(newMessage);
+    } catch (error) {
+      console.error('Error saving message:', error);
+      res.status(500).json({ error: 'Failed to save message' });
+    }
+  })();
 });
 
 app.listen(port, () => {

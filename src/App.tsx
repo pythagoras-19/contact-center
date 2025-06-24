@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import './App.css';
 
 interface ChatMessage {
@@ -10,6 +11,18 @@ interface ChatMessage {
   emoji: string;
   status: 'online' | 'away' | 'busy';
 }
+
+// Function to sanitize and encode HTML entities
+const sanitizeAndEncode = (text: string): string => {
+  // Encode special characters to prevent XSS
+  // Order matters: encode & first to avoid double encoding
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+};
 
 function App() {
   const [activeChat, setActiveChat] = useState<string | null>(null);
@@ -69,10 +82,13 @@ function App() {
 
   const getActiveChat = () => chats.find(chat => chat.id === activeChat);
 
+  // Sanitize input on send
   const handleSendMessage = () => {
     if (messageInput.trim() && activeChat) {
-      // In a real app, this would send the message
+      const sanitized = sanitizeAndEncode(messageInput);
+      // In a real app, this would send the sanitized message
       setMessageInput('');
+      // For demo, you could add the message to the chat (not implemented here)
     }
   };
 
@@ -92,6 +108,11 @@ function App() {
       case 'busy': return '🔴 Busy';
       default: return '⚪ Offline';
     }
+  };
+
+  // Function to get display value (encoded) vs edit value (raw)
+  const getDisplayValue = (value: string) => {
+    return sanitizeAndEncode(value);
   };
 
   return (
@@ -148,10 +169,10 @@ function App() {
                 </div>
                 <div className="chat-info">
                   <div className="chat-header">
-                    <span className="customer-name">{chat.customerName}</span>
+                    <span className="customer-name">{sanitizeAndEncode(chat.customerName)}</span>
                     <span className="chat-time">{formatTime(chat.timestamp)}</span>
                   </div>
-                  <p className="chat-preview">{chat.message}</p>
+                  <p className="chat-preview">{sanitizeAndEncode(chat.message)}</p>
                   {chat.isNew && <span className="new-badge">🆕 New</span>}
                 </div>
               </div>
@@ -166,14 +187,14 @@ function App() {
               <div className="chat-header">
                 <div className="chat-customer-info">
                   <div className="customer-avatar">
-                    <span className="avatar-emoji-large">{getActiveChat()?.emoji}</span>
+                    <span className="avatar-emoji-large">{getActiveChat() && sanitizeAndEncode(getActiveChat()!.emoji)}</span>
                     <div 
                       className="status-indicator-large"
                       style={{ backgroundColor: getStatusColor(getActiveChat()?.status || 'online') }}
                     ></div>
                   </div>
                   <div>
-                    <h3>{getActiveChat()?.customerName}</h3>
+                    <h3>{getActiveChat() && sanitizeAndEncode(getActiveChat()!.customerName)}</h3>
                     <span className="customer-status">{getStatusText(getActiveChat()?.status || 'online')}</span>
                   </div>
                 </div>
@@ -188,7 +209,7 @@ function App() {
               <div className="messages-container">
                 <div className="message customer">
                   <div className="message-content">
-                    {getActiveChat()?.message}
+                    {getActiveChat() && sanitizeAndEncode(getActiveChat()!.message)}
                   </div>
                   <div className="message-time">
                     {getActiveChat() && formatTime(getActiveChat()!.timestamp)}
@@ -214,13 +235,20 @@ function App() {
                     placeholder="Type your message... 💬"
                     className="message-input"
                     value={messageInput}
-                    onChange={(e) => setMessageInput(e.target.value)}
+                    onChange={(e) => {
+                      setMessageInput(e.target.value);
+                    }}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                   />
                   <button className="send-btn" onClick={handleSendMessage}>
                     Send ✨
                   </button>
                 </div>
+                {messageInput && (
+                  <div className="message-preview">
+                    <small>Preview: {getDisplayValue(messageInput)}</small>
+                  </div>
+                )}
                 <div className="quick-replies">
                   <button className="quick-reply">👋 Hello!</button>
                   <button className="quick-reply">👍 Thanks!</button>

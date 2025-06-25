@@ -18,6 +18,8 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+export { AuthContext };
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -78,10 +80,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [token]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
+    console.log('🔐 Login attempt:', { email });
     setIsLoading(true);
     setError(null);
 
     try {
+      console.log('📡 Sending login request to:', `${API_BASE}/auth/login`);
       const response = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: {
@@ -90,18 +94,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify({ email, password }),
       });
 
+      console.log('📥 Response status:', response.status);
       const data = await response.json();
+      console.log('📥 Response data:', data);
 
       if (response.ok) {
+        console.log('✅ Login successful, setting user and token');
         setUser(data.user);
         setToken(data.token);
         localStorage.setItem('token', data.token);
         return true;
       } else {
+        console.log('❌ Login failed:', data.error);
         setError(data.error || 'Login failed');
         return false;
       }
     } catch (error) {
+      console.error('🚨 Login error:', error);
       setError('Network error. Please try again.');
       return false;
     } finally {

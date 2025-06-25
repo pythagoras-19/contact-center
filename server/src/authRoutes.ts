@@ -1,4 +1,5 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
+import { body, validationResult } from 'express-validator';
 import { 
   hashPassword, 
   comparePassword, 
@@ -12,6 +13,51 @@ import {
 import { dynamoDb } from './db';
 
 const router = Router();
+
+// Validation middleware
+const handleValidationErrors = (req: Request, res: Response, next: NextFunction): void => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({ 
+      error: 'Validation failed', 
+      details: errors.array() 
+    });
+    return;
+  }
+  next();
+};
+
+// Registration validation rules
+const registerValidation = [
+  body('email')
+    .isEmail()
+    .normalizeEmail()
+    .withMessage('Please provide a valid email address')
+    .isLength({ max: 254 })
+    .withMessage('Email is too long'),
+  body('password')
+    .isLength({ min: 8, max: 128 })
+    .withMessage('Password must be between 8 and 128 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'),
+  body('role')
+    .optional()
+    .isIn(['agent', 'admin'])
+    .withMessage('Role must be either "agent" or "admin"'),
+  handleValidationErrors
+];
+
+// Login validation rules
+const loginValidation = [
+  body('email')
+    .isEmail()
+    .normalizeEmail()
+    .withMessage('Please provide a valid email address'),
+  body('password')
+    .notEmpty()
+    .withMessage('Password is required'),
+  handleValidationErrors
+];
 
 // GET /auth/users - List all users (admin only)
 router.get('/users', authenticateToken, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
@@ -53,25 +99,9 @@ router.get('/users', authenticateToken, async (req: AuthenticatedRequest, res: R
 });
 
 // POST /auth/register - Register a new user
-router.post('/register', async (req: Request, res: Response): Promise<void> => {
+router.post('/register', registerValidation, async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, role = 'agent' } = req.body;
-
-    // Validation
-    if (!email || !password) {
-      res.status(400).json({ error: 'Email and password are required' });
-      return;
-    }
-
-    if (password.length < 6) {
-      res.status(400).json({ error: 'Password must be at least 6 characters long' });
-      return;
-    }
-
-    if (!email.includes('@')) {
-      res.status(400).json({ error: 'Invalid email format' });
-      return;
-    }
 
     // Check if user already exists
     const existingUser = await findUserByEmail(email);
@@ -107,15 +137,9 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
 });
 
 // POST /auth/login - Login user
-router.post('/login', async (req: Request, res: Response): Promise<void> => {
+router.post('/login', loginValidation, async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
-
-    // Validation
-    if (!email || !password) {
-      res.status(400).json({ error: 'Email and password are required' });
-      return;
-    }
 
     // Find user by email
     const user = await findUserByEmail(email);

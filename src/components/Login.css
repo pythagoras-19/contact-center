@@ -160,4 +160,27 @@
   .login-header h1 {
     font-size: 2rem;
   }
+}
+
+.branding {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.brand-title {
+  color: #333;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-tagline {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+  font-style: italic;
 } 

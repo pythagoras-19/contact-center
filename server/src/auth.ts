@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import { dynamoDb } from './db';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const CSRF_SECRET = process.env.CSRF_SECRET || 'csrf-secret-key-change-in-production';
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -12,6 +14,41 @@ export interface AuthenticatedRequest extends Request {
     role: string;
   };
 }
+
+// CSRF Protection
+export const generateCSRFToken = (): string => {
+  return crypto.randomBytes(32).toString('hex');
+};
+
+export const validateCSRFToken = (req: Request, res: Response, next: NextFunction): void => {
+  const token = req.headers['x-csrf-token'] as string;
+  const sessionToken = req.headers['authorization']?.split(' ')[1];
+  
+  if (!token || !sessionToken) {
+    res.status(403).json({ error: 'CSRF token required' });
+    return;
+  }
+
+  try {
+    // Verify the session token first
+    const decoded = jwt.verify(sessionToken, JWT_SECRET) as any;
+    
+    // Generate expected CSRF token from session
+    const expectedToken = crypto
+      .createHmac('sha256', CSRF_SECRET)
+      .update(decoded.id + decoded.email)
+      .digest('hex');
+    
+    if (token !== expectedToken) {
+      res.status(403).json({ error: 'Invalid CSRF token' });
+      return;
+    }
+    
+    next();
+  } catch (error) {
+    res.status(403).json({ error: 'Invalid session or CSRF token' });
+  }
+};
 
 // Middleware to verify JWT token
 export const authenticateToken = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {

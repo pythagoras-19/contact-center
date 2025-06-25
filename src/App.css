@@ -11,7 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #f59e0b 100%);
   min-height: 100vh;
 }
 
@@ -24,7 +24,7 @@ body {
 
 /* Header */
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #f59e0b 100%);
   color: white;
   padding: 1rem 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
@@ -208,7 +208,7 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+  background: linear-gradient(90deg, #1e3a8a, #f59e0b, #1e3a8a);
   background-size: 200% 100%;
   animation: gradient-shift 3s ease-in-out infinite;
 }
@@ -291,14 +291,14 @@ body {
   background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
   transform: translateY(-2px) scale(1.02);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  border-color: rgba(102, 126, 234, 0.2);
+  border-color: rgba(30, 58, 138, 0.2);
 }
 
 .chat-item.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #f59e0b 100%);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 25px rgba(30, 58, 138, 0.3);
 }
 
 .chat-item.new {
@@ -320,7 +320,7 @@ body {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #f59e0b 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -329,13 +329,13 @@ body {
   font-size: 1.25rem;
   flex-shrink: 0;
   position: relative;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
   transition: all 0.3s ease;
 }
 
 .chat-item:hover .chat-avatar {
   transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 16px rgba(30, 58, 138, 0.4);
 }
 
 .chat-item.active .chat-avatar {
@@ -470,7 +470,7 @@ body {
   font-weight: 600;
   color: #1a202c;
   margin-bottom: 0.75rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #f59e0b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -506,7 +506,7 @@ body {
 .welcome-stat:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  border-color: rgba(102, 126, 234, 0.2);
+  border-color: rgba(30, 58, 138, 0.2);
 }
 
 .stat-icon {
@@ -574,7 +574,7 @@ body {
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  border: 1px solid rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(30, 58, 138, 0.1);
   min-height: 0;
 }
 
@@ -598,7 +598,7 @@ body {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #f59e0b 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -606,7 +606,7 @@ body {
   font-weight: 600;
   font-size: 1.5rem;
   position: relative;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 16px rgba(30, 58, 138, 0.3);
 }
 
 .avatar-emoji-large {
@@ -667,7 +667,7 @@ body {
   background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  border-color: rgba(102, 126, 234, 0.2);
+  border-color: rgba(30, 58, 138, 0.2);
 }
 
 /* Messages */
@@ -723,7 +723,7 @@ body {
 }
 
 .message.agent .message-content {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #f59e0b 100%);
   color: white;
   border-bottom-right-radius: 6px;
 }
@@ -756,7 +756,7 @@ body {
 .typing-dots span {
   width: 8px;
   height: 8px;
-  background: #667eea;
+  background: #1e3a8a;
   border-radius: 50%;
   animation: typingDot 1.4s ease-in-out infinite;
 }
@@ -803,15 +803,15 @@ body {
 }
 
 .message-input:focus {
-  border-color: #667eea;
+  border-color: #1e3a8a;
   background: white;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1);
   transform: scale(1.02);
 }
 
 .send-btn {
   padding: 1rem 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #f59e0b 100%);
   color: white;
   border: none;
   border-radius: 24px;
@@ -819,7 +819,7 @@ body {
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 16px rgba(30, 58, 138, 0.3);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -827,7 +827,7 @@ body {
 
 .send-btn:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 24px rgba(30, 58, 138, 0.4);
 }
 
 .send-btn:active {
@@ -853,11 +853,11 @@ body {
 }
 
 .quick-reply:hover {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #f59e0b 100%);
   color: white;
-  border-color: #667eea;
+  border-color: #1e3a8a;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
 }
 
 /* Footer */
@@ -877,7 +877,7 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+  background: linear-gradient(90deg, #1e3a8a, #f59e0b, #1e3a8a);
   background-size: 200% 100%;
   animation: gradient-shift 3s ease-in-out infinite;
 }
@@ -939,7 +939,7 @@ body {
   left: 0;
   width: 2rem;
   height: 2px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: linear-gradient(90deg, #1e3a8a, #f59e0b);
   border-radius: 1px;
 }
 
@@ -996,10 +996,10 @@ body {
 }
 
 .social-link:hover {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #f59e0b 100%);
   transform: translateY(-2px) scale(1.1);
   border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
 }
 
 .footer-bottom {
@@ -1029,7 +1029,7 @@ body {
 .author-name {
   color: white;
   font-weight: 600;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #1e3a8a, #f59e0b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import AWS from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
+import authRoutes from './authRoutes';
+import { authenticateToken, AuthenticatedRequest } from './auth';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -28,11 +30,17 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'connectly-backend' });
 });
 
-// GET /chats - List all chats (unique chatIds, with latest message)
-app.get('/chats', async (_req: Request, res: Response) => {
+// Authentication routes
+app.use('/auth', authRoutes);
+
+// GET /chats - List all chats (unique chatIds, with latest message) - Protected
+app.get('/chats', authenticateToken, async (_req: Request, res: Response) => {
   const params = {
     TableName: 'Messages',
-    ProjectionExpression: 'chatId, customerName, message, timestamp',
+    ProjectionExpression: 'chatId, customerName, message, #ts',
+    ExpressionAttributeNames: {
+      '#ts': 'timestamp'
+    },
   };
   try {
     const data = await dynamoDb.scan(params).promise();
@@ -51,8 +59,8 @@ app.get('/chats', async (_req: Request, res: Response) => {
   }
 });
 
-// GET /chats/:chatId/messages - List all messages for a chat (scan + filter)
-app.get('/chats/:chatId/messages', async (req: Request, res: Response) => {
+// GET /chats/:chatId/messages - List all messages for a chat (scan + filter) - Protected
+app.get('/chats/:chatId/messages', authenticateToken, async (req: Request, res: Response) => {
   const { chatId } = req.params;
   const params = {
     TableName: 'Messages',
@@ -72,13 +80,14 @@ app.get('/chats/:chatId/messages', async (req: Request, res: Response) => {
   }
 });
 
-// POST /chats/:chatId/messages - Add a message to a chat
-app.post('/chats/:chatId/messages', (req: Request, res: Response) => {
+// POST /chats/:chatId/messages - Add a message to a chat - Protected
+app.post('/chats/:chatId/messages', authenticateToken, (req: Request, res: Response) => {
   (async () => {
     const { chatId } = req.params;
     const { customerName, message } = req.body;
     if (!customerName || !message) {
-      return res.status(400).json({ error: 'customerName and message are required' });
+      res.status(400).json({ error: 'customerName and message are required' });
+      return;
     }
     const newMessage = {
       id: uuidv4(),
